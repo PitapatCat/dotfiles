@@ -45,7 +45,7 @@ let g:fzf_colors =
 " - History files will be stored in the specified directory
 " - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
 "   'previous-history' instead of 'down' and 'up'.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
+" let g:fzf_history_dir = '~/.local/share/fzf-history'
 let g:fzf_preview_window = ['up:60%', 'ctrl-/']
 " --- FZF settings ---
 
