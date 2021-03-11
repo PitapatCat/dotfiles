@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 " -- insert plugins --
 Plug 'gruvbox-community/gruvbox'
 Plug 'vimwiki/vimwiki'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
@@ -138,3 +138,5 @@ augroup remember_folds
   autocmd BufWinLeave * mkview
   autocmd BufWinEnter * silent! loadview
 augroup END
+
+

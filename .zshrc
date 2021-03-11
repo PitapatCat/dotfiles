@@ -110,10 +110,6 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_OPTS="--extended"
-
-export FZF_DEFAULT_OPTS='--bind ctrl-j:down,ctrl-k:up'
-
 # fzf color scheme
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
  --color=fg:#1d2021,bg:#f9f5d7,hl:#7c6f64
@@ -121,6 +117,10 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
  --color=info:#689d6a,prompt:#9d0006,pointer:#9d0006
  --color=marker:#9d0006,spinner:#9d0006,header:#689d6a'
 
+# if type rg &> /dev/null; then
+#   export FZF_DEFAULT_COMMAND='rg --files'
+#   export FZF_DEFAULT_OPTS='-m --height 50% --border'
+# fi
 
-
+# export FZF_DEFAULT_COMMAND='rg'
 # export FZF_DEFAULT_OPTS='--bind ctrl-j:down,ctrl-k:up'
