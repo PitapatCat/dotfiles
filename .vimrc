@@ -5,7 +5,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dispatch'
-Plug 'thinca/vim-quickrun'
 Plug 'NLKNguyen/papercolor-theme'
 call plug#end()
 " --- vim-plug settings ---
@@ -84,7 +83,7 @@ let g:fzf_colors =
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
   \ 'hl+':     ['fg', 'Statement'],
   \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
+  \ 'border':  ['fg', 'PreProc'],
   \ 'prompt':  ['fg', 'Conditional'],
   \ 'pointer': ['fg', 'Exception'],
   \ 'marker':  ['fg', 'Keyword'],
@@ -96,22 +95,41 @@ let g:fzf_colors =
 autocmd BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " --- template settings ---
 
-" --- compile run settings --- 
+" --- compile run settings ---
 " <leader>m to test for errors
 " <leader>r to show output
 " Java
 autocmd FileType java nnoremap <leader>m :w <bar> :set makeprg=javac\ %<CR>:Make<CR>
 autocmd FileType java nnoremap <leader>n :w <bar> :ter java -cp %:p:h %:t:r <CR>
 " C++
-autocmd FileType cpp nnoremap <leader>m :w <bar> :set makeprg=g++\ %\ -o\ %<<CR>:Make<CR>
+autocmd FileType cpp nnoremap <leader>m :w <bar> :set makeprg=g++\ --std=c++17\ %\ -o\ %<<CR>:Make<CR>
 autocmd FileType cpp nnoremap <leader>n :w <bar> :ter ./%< <CR>
-" --- compile run settings --- 
 
-nnoremap <leader>t :let $VIM_DIR=expand('%:p:h')<bar>:let $FILE_NAME=expand('%')<CR>:terminal<CR>cd $VIM_DIR
+" the following code only works with nvim
+set hidden
 
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent! loadview
-augroup END
+function! TermWrapper(command) abort
+	if !exists('g:split_term_style') | let g:split_term_style = 'vertical' | endif
+	if g:split_term_style ==# 'vertical'
+		let buffercmd = 'vnew'
+	elseif g:split_term_style ==# 'horizontal'
+		let buffercmd = 'new'
+	else
+		echoerr 'ERROR! g:split_term_style is not a valid value (must be ''horizontal'' or ''vertical'' but is currently set to ''' . g:split_term_style . ''')'
+		throw 'ERROR! g:split_term_style is not a valid value (must be ''horizontal'' or ''vertical'')'
+	endif
+	if exists('g:split_term_resize_cmd')
+		exec g:split_term_resize_cmd
+	endif
+	exec buffercmd
+	exec 'term ' . a:command
+	exec 'setlocal nornu nonu'
+	exec 'startinsert'
+endfunction
 
+command! -nargs=0 CompileAndRun call TermWrapper(printf('g++ -std=c++11 %s && ./a.out', expand('%')))
+command! -nargs=1 CompileAndRunWithFile call TermWrapper(printf('g++ -std=c++11 %s && ./a.out < %s', expand('%'), <args>))
+autocmd FileType cpp nnoremap <leader>fw :CompileAndRun<CR>
+
+let g:split_term_style = 'horizontal'
+" --- compile run settings ---
