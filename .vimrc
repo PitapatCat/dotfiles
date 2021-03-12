@@ -1,66 +1,22 @@
 " --- vim-plug settings ---
 call plug#begin('~/.vim/plugged')
-" -- insert plugins --
-Plug 'gruvbox-community/gruvbox'
-Plug 'vimwiki/vimwiki'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dispatch'
 Plug 'thinca/vim-quickrun'
-" -- insert plugins --
+Plug 'NLKNguyen/papercolor-theme'
 call plug#end()
 " --- vim-plug settings ---
 
-" --- VimWiki settings ---
-filetype plugin on
-syntax on
-" set to markdown
-let g:vimwiki_list = [{'path': '~/my_site/', 'syntax': 'markdown', 'ext': '.md'}]
-" --- VimWiki settings ---
-
-" --- FZF settings ---
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-" This is the default extra key bindings
-" let g:fzf_action = {
-"   \ 'ctrl-t': 'tab split',
-"   \ 'ctrl-x': 'split',
-"   \ 'ctrl-v': 'vsplit' }
-" Enable per-command history
-" - History files will be stored in the specified directory
-" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
-"   'previous-history' instead of 'down' and 'up'.
-" let g:fzf_history_dir = '~/.local/share/fzf-history'
-let g:fzf_preview_window = ['up:60%', 'ctrl-/']
-" --- FZF settings ---
-
 " --- general settings ---
-" colorscheme
-set termguicolors
-let g:gruvbox_contrast_light = 'hard'
-colorscheme gruvbox
+" color scheme
 set background=light
+colorscheme papercolor
 " line numbers
 set number
 set relativenumber
-autocmd InsertEnter * :set norelativenumber
-autocmd InsertLeave * :set relativenumber 
-let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro nocul'
 " indenting 
 set tabstop=4
 set expandtab
@@ -116,6 +72,26 @@ set noswapfile
 set signcolumn=yes
 " --- general settings ---
 
+" --- fzf settings ---
+" Default fzf layout
+" - Popup window
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+" --- fzf settings ---
+
 " --- template settings ---
 autocmd BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " --- template settings ---
@@ -138,5 +114,4 @@ augroup remember_folds
   autocmd BufWinLeave * mkview
   autocmd BufWinEnter * silent! loadview
 augroup END
-
 
