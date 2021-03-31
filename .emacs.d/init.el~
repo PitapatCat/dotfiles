@@ -1,0 +1,3 @@
+(add-to-list 'load-path "~/Documents/evil")
+(require 'evil)
+(evil-mode 1)
