@@ -1,18 +1,78 @@
-(add-to-list 'load-path "~/Documents/evil")
+(require 'package)
+
+; Melpa as default emacs package repository
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+; activate packages
+(package-initialize)
+
 (require 'evil)
 (evil-mode 1)
 
-;; -*- mode: elisp -*-
-
-;; Disable the splash screen (to enable it agin, replace the t with 0)
-(setq inhibit-splash-screen t)
-
-;; Enable transient mark mode
-(transient-mark-mode 1)
-
-;;;;Org mode configuration
-;; Enable Org mode
 (require 'org)
-;; Make Org mode work with files ending in .org
-;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-;; The above is the default in recent emacsen
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+; remove auto indentation
+; (setq org-adapt-indentation nil)
+
+; list behavior like in Google Docs
+(add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
+
+; word wrap
+(add-hook 'org-mode-hook #'(lambda ()
+
+                             ;; make the lines in the buffer wrap around the edges of the screen.
+                             
+                             ;; to press C-c q  or fill-paragraph ever again!
+                             (visual-line-mode)
+                             (org-indent-mode)))
+
+; expands snippets
+(require 'org-tempo)
+
+(define-key text-mode-map (kbd "TAB") 'self-insert-command);
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(org-agenda-property cloud-to-butt-erc cloud-theme twilight-bright-theme base16-theme evil-org org-autolist evil)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+; evil-org: provides better vim bindings
+(use-package evil-org
+  :commands evil-org-mode
+  :after org
+  :init
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  :config
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme '(textobjects insert navigation additional shift todo heading)))))
+
+;; color scheme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+;; (load-theme 'base16-papercolor-light-light t)
+;; (load-theme 'twilight-bright t)
+;; (load-theme 'cloud t)
+
+(require 'apropospriate)
+(load-theme 'apropospriate-light t)
+
+;; (set-face-attribute 'fringe nil :background nil)
+;; (set-face-background 'mode-line "#f3f3f3")
+;; (set-face-background 'mode-line-inactive "#f3f3f3")
+
+;; remove tool bar and scroll bar
+(tool-bar-mode -1)
+(toggle-scroll-bar -1)
+
+;; remove bell sound
+(setq visible-bell t) 
