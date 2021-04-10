@@ -6,10 +6,19 @@ Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dispatch'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'vimwiki/vimwiki'
+Plug 'cormacrelf/vim-colors-github'
+Plug 'chriskempson/base16-vim'
 call plug#end()
 " --- vim-plug settings ---
 
 " --- general settings ---
+" vimwiki required settings
+set nocompatible
+filetype plugin on
+syntax on
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
 " color scheme
 set background=light
 colorscheme papercolor
@@ -35,12 +44,17 @@ set undofile
 " begin search as you type
 set incsearch
 " disables auto comments after newline of original comment
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd FileType c,java inoreabbrev <buffer> /** /**<CR>/<Up>
+" autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " natural splits
 set splitbelow
 set splitright
 " resize split when resize terminal 
 autocmd VimResized * wincmd = 
+" escape to normal mode from terminal mode for nvim
+if has('nvim')
+  tnoremap <C-[> <C-\><C-n>
+endif
 " indented text wrapping when whitespace
 set breakindent
 set breakindentopt=shift:2
@@ -69,6 +83,8 @@ set title
 set noswapfile
 " Always show sign column
 set signcolumn=yes
+" Remove highlight search
+set nohlsearch
 " --- general settings ---
 
 " --- fzf settings ---
@@ -97,7 +113,7 @@ autocmd BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 
 " --- compile run settings ---
 " <leader>m to test for errors
-" <leader>r to show output
+" <leader>n to show output
 " Java
 autocmd FileType java nnoremap <leader>m :w <bar> :set makeprg=javac\ %<CR>:Make<CR>
 autocmd FileType java nnoremap <leader>n :w <bar> :ter java -cp %:p:h %:t:r <CR>
@@ -129,7 +145,7 @@ endfunction
 
 command! -nargs=0 CompileAndRun call TermWrapper(printf('g++ -std=c++11 %s && ./a.out', expand('%')))
 command! -nargs=1 CompileAndRunWithFile call TermWrapper(printf('g++ -std=c++11 %s && ./a.out < %s', expand('%'), <args>))
-autocmd FileType cpp nnoremap <leader>fw :CompileAndRun<CR>
+autocmd FileType cpp nnoremap <leader>r :w<bar>:CompileAndRun<CR>
 
 let g:split_term_style = 'horizontal'
 " --- compile run settings ---
