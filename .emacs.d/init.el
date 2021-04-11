@@ -13,31 +13,29 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
-; list behavior like in Google Docs
+;; list behavior like in Google Docs
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 
-; word wrap
+;; word wrap and indent
 (add-hook 'org-mode-hook #'(lambda () (visual-line-mode) (org-indent-mode)))
+;; (setq org-adapt-indentation nil)
+;; (setq org-src-preserve-indentation nil 
+;; org-edit-src-content-indentation 0)
+;; (setq org-edit-src-content-indentation 0
+;;       org-src-tab-acts-natively t
+;;       org-src-preserve-indentation t)
+(setq org-src-fontify-natively t
+      org-src-window-setup 'current-window
+      org-src-strip-leading-and-trailing-blank-lines t
+      org-src-preserve-indentation t
+      org-src-tab-acts-natively t)
 
-; expands snippets (e.g. code block)
+;; expands snippets (e.g. code block)
 (require 'org-tempo)
 
 (define-key text-mode-map (kbd "TAB") 'self-insert-command);
-;; (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- ;; '(package-selected-packages
-   ;; '(org-agenda-property cloud-to-butt-erc cloud-theme twilight-bright-theme base16-theme evil-org org-autolist evil)))
-;; (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- ;; )
 
-; evil-org: provides better vim bindings
+;; evil-org: provides better vim bindings
 (use-package evil-org
   :commands evil-org-mode
   :after org
@@ -68,11 +66,20 @@
 ;; remove bell sound
 (setq visible-bell t) 
 
-; relative line numbers
+;; relative line numbers
 (menu-bar-display-line-numbers-mode 'relative)
 (add-hook 'foo-mode-hook #'display-line-numbers-mode)
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
+
+;; disable electric-indent-mode
+;; (electric-indent-mode -1)
+
+;; activate aggressive-indent mode
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(add-hook 'css-mode-hook #'aggressive-indent-mode)
+(global-aggressive-indent-mode 1)
+(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -80,7 +87,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(linum-relative use-package twilight-bright-theme org-autolist org-agenda-property nlinum-relative evil-org cloud-to-butt-erc cloud-theme base16-theme apropospriate-theme)))
+   '(aggressive-indent linum-relative use-package twilight-bright-theme org-autolist org-agenda-property nlinum-relative evil-org cloud-to-butt-erc cloud-theme base16-theme apropospriate-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
